@@ -2,65 +2,84 @@ package com.nightspawn.sg;
 
 import pythagoras.f.Dimension;
 import pythagoras.f.Rectangle;
+import pythagoras.f.Vector;
 
 public class Sprite<T> extends Spatial {
-    protected T texture;
-    protected Dimension dim;
-    protected int animation, frame;
-    private SpriteAnimator animator;
+	protected T texture;
+	protected Dimension dim;
+	protected Vector offset;
+	protected int animation, frame;
+	private SpriteAnimator animator;
 
-    public Sprite(T texture, Dimension d) {
-        super();
-        dim = d;
-        animation = frame = 0;
-        this.texture = texture;
-        setModelBound(new BoundingRectangle(new Rectangle(dim)));
-    }
+	public Sprite(T texture, Dimension d, Vector offset) {
+		super();
+		init(texture, d, offset);
+	}
 
-    public void setAnimator(SpriteAnimator a) {
-        animator = a;
-        animator.setSprite(this);
-    }
+	public Sprite(T texture, Dimension d) {
+		init(texture, d, new Vector());
+	}
 
-    public void stopAnimation() {
-        animator = null;
-    }
+	public void init(T texture, Dimension d, Vector offset) {
+		dim = d;
+		this.offset = offset;
+		animation = frame = 0;
+		this.texture = texture;
+		setModelBound(new BoundingRectangle(new Rectangle(dim)));
+	}
 
-    public T getTexture() {
-        return texture;
-    }
+	public void setAnimator(SpriteAnimator a) {
+		animator = a;
+		animator.setSprite(this);
+	}
 
-    public Dimension getDim() {
-        return dim;
-    }
+	public void stopAnimation() {
+		animator = null;
+	}
 
-    public int getAnimation() {
-        return animation;
-    }
+	public T getTexture() {
+		return texture;
+	}
 
-    public int getFrame() {
-        return frame;
-    }
+	public Dimension getDim() {
+		return dim;
+	}
 
-    @Override
-    public void visit(SceneGraphVisitor visitor) {
-        visitor.visitSprite(this);
-    }
+	public int getAnimation() {
+		return animation;
+	}
 
-    @Override
-    public void update(float deltams) {
-        if (animator != null) {
-            animator.update(deltams);
-        }
-        super.update(deltams);
-    }
+	public int getFrame() {
+		return frame;
+	}
 
-    public void setAnimation(int animation) {
-        this.animation = animation;
-    }
+	@Override
+	public void visit(SceneGraphVisitor visitor) {
+		visitor.visitSprite(this);
+	}
 
-    public void setFrame(int frame) {
-        this.frame = frame;
-    }
+	@Override
+	public void update(float deltams) {
+		if (animator != null) {
+			animator.update(deltams);
+		}
+		super.update(deltams);
+	}
+
+	public void setAnimation(int animation) {
+		this.animation = animation;
+	}
+
+	public void setFrame(int frame) {
+		this.frame = frame;
+	}
+
+	public Vector getOffset() {
+		return offset;
+	}
+
+	public void setOffset(Vector offset) {
+		this.offset = offset;
+	}
 
 }
